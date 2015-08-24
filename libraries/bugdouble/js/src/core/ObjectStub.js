@@ -110,7 +110,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         restore: function() {
             var _this = this;
-            this.functionStubs.getKeyArray().forEach(function(functionName) {
+            this.functionStubs.toKeyArray().forEach(function(functionName) {
                 var functionStub = _this.functionStubs.get(functionName);
                 _this.getTargetObject()[functionName] = functionStub.getTargetFunction();
             });
@@ -127,7 +127,7 @@ require('bugpack').context("*", function(bugpack) {
                 if (!TypeUtil.isFunction(this.stubDeclaration[functionName])) {
                     throw new Error("Stub is not a function '" + functionName + "'");
                 }
-                var functionStub = new FunctionStub(this.targetObject[functionName], this.stubDeclaration[functionName]);
+                var functionStub = new FunctionStub(this.targetObject[functionName], this.stubDeclaration[functionName], this.targetObject);
                 this.functionStubs.put(functionName, functionStub);
                 this.targetObject[functionName] = functionStub.stub();
             }

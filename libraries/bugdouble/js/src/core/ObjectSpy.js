@@ -111,7 +111,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         restore: function() {
             var _this = this;
-            this.functionSpies.getKeyArray().forEach(function(functionName) {
+            this.functionSpies.toKeyArray().forEach(function(functionName) {
                 var functionSpy = _this.functionSpies.get(functionName);
                 _this.object[functionName] = functionSpy.getTargetFunction();
             });
@@ -124,7 +124,7 @@ require('bugpack').context("*", function(bugpack) {
             for (var propertyName in this.getTargetObject()) {
                 var propertyValue = this.getTargetObject()[propertyName];
                 if (TypeUtil.isFunction(propertyValue)) {
-                    var functionSpy = new FunctionSpy(propertyValue);
+                    var functionSpy = new FunctionSpy(propertyValue, this.getTargetObject());
                     this.functionSpies.put(propertyName, functionSpy);
                     this.targetObject[propertyName] = functionSpy.spy();
                 }

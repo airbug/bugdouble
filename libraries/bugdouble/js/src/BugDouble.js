@@ -60,10 +60,11 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {function(...):*} targetFunction
+     * @param {Object=} targetContext
      * @return {function(...):*}
      */
-    BugDouble.spyOnFunction = function(targetFunction) {
-        return (new FunctionSpy(targetFunction)).spy();
+    BugDouble.spyOnFunction = function(targetFunction, targetContext) {
+        return (new FunctionSpy(targetFunction, targetContext)).spy();
     };
 
     /**
@@ -81,10 +82,11 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @param {function(...):*} targetFunction
      * @param {function(...):*} stubFunction
+     * @param {Object=} targetContext
      * @return {function(...):*}
      */
-    BugDouble.stubFunction = function(targetFunction, stubFunction) {
-        return (new FunctionStub(targetFunction, stubFunction)).stub();
+    BugDouble.stubFunction = function(targetFunction, stubFunction, targetContext) {
+        return (new FunctionStub(targetFunction, stubFunction, targetContext)).stub();
     };
 
     /**

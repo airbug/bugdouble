@@ -60,8 +60,9 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @constructs
          * @param {function(...):*} targetFunction
+         * @param {Object=} targetContext
          */
-        _constructor: function(targetFunction) {
+        _constructor: function(targetFunction, targetContext) {
 
             this._super();
 
@@ -78,6 +79,12 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
+             * @type {Object}
+             */
+            this.targetContext      = targetContext;
+
+            /**
+             * @private
              * @type {function(...):*}
              */
             this.targetFunction     = targetFunction;
@@ -87,6 +94,13 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
         // Getters and Setters
         //-------------------------------------------------------------------------------
+
+        /**
+         * @return {Object}
+         */
+        getTargetContext: function() {
+            return this.targetContext;
+        },
 
         /**
          * @return {function(...):*}
@@ -117,7 +131,7 @@ require('bugpack').context("*", function(bugpack) {
                 var args = ArgUtil.toArray(arguments);
                 var functionCall = new FunctionCall(args);
                 _this.functionCallList.add(functionCall);
-                return _this.targetFunction.apply(this, args);
+                return _this.targetFunction.apply(_this.getTargetContext(), args);
             };
             Proxy.proxy(spy, _this, [
                 "getCallCount",

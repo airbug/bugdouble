@@ -55,8 +55,9 @@ require('bugpack').context("*", function(bugpack) {
          * @constructs
          * @param {function(...):*} targetFunction
          * @param {function(...):*} stubFunction
+         * @param {Object} targetContext
          */
-        _constructor: function(targetFunction, stubFunction) {
+        _constructor: function(targetFunction, stubFunction, targetContext) {
 
             this._super();
 
@@ -70,6 +71,12 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(...):*}
              */
             this.stubFunction       = stubFunction;
+
+            /**
+             * @private
+             * @type {Object}
+             */
+            this.targetContext      = targetContext;
 
             /**
              * @private
@@ -91,6 +98,13 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
+         * @return {Object}
+         */
+        getTargetContext: function() {
+            return this.targetContext;
+        },
+
+        /**
          * @return {function(...):*}
          */
         getTargetFunction: function() {
@@ -106,7 +120,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {function(...):*}
          */
         stub: function() {
-            return (new FunctionSpy(this.stubFunction)).spy();
+            return (new FunctionSpy(this.stubFunction, this.targetContext)).spy();
         }
     });
 
